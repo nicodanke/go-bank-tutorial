@@ -30,4 +30,7 @@ sqlc_generate:
 test:
 	go test -v -cover ./...
 
-.PHONY: stop_containers create_container create_db start_container migrate_up migrate_down sqlc_generate test
+server:
+	go run main.go
+
+.PHONY: stop_containers create_container create_db start_container migrate_up migrate_down sqlc_generate test server
