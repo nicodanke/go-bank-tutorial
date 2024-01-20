@@ -33,4 +33,7 @@ test:
 server:
 	go run main.go
 
-.PHONY: stop_containers create_container create_db start_container migrate_up migrate_down sqlc_generate test server
+mock:
+	mockgen -package mockdb -destination db/mock/store.go github.com/nicodanke/bankTutorial/db/sqlc Store
+
+.PHONY: stop_containers create_container create_db start_container migrate_up migrate_down sqlc_generate test server mock
