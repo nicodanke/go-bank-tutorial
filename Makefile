@@ -21,8 +21,14 @@ start_container:
 migrate_up:
 	migrate -path db/migrations -database ${DSN} -verbose up
 
+migrate_up1:
+	migrate -path db/migrations -database ${DSN} -verbose up 1
+
 migrate_down:
 	migrate -path db/migrations -database ${DSN} -verbose down
+
+migrate_down1:
+	migrate -path db/migrations -database ${DSN} -verbose down 1
 
 sqlc_generate:
 	sqlc generate
@@ -36,4 +42,4 @@ server:
 mock:
 	mockgen -package mockdb -destination db/mock/store.go github.com/nicodanke/bankTutorial/db/sqlc Store
 
-.PHONY: stop_containers create_container create_db start_container migrate_up migrate_down sqlc_generate test server mock
+.PHONY: stop_containers create_container create_db start_container migrate_up migrate_up1 migrate_down migrate_down1 sqlc_generate test server mock
