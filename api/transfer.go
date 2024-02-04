@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx"
 	db "github.com/nicodanke/bankTutorial/db/sqlc"
+	"github.com/nicodanke/bankTutorial/token"
 )
 
 type transferRequest struct {
@@ -23,12 +24,20 @@ func (server *Server) createTransfer(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
 		return
 	}
-
-	if !server.validateAccount(ctx, req.FromAccountId, req.Currency) {
+	fromAccount, valid := server.validateAccount(ctx, req.FromAccountId, req.Currency)
+	if !valid {
 		return
 	}
 
-	if !server.validateAccount(ctx, req.ToAccountId, req.Currency) {
+	authPayload := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
+	if fromAccount.Owner != authPayload.Username {
+		err := errors.New("FromAccount doesn't belong to the uthenticated user")
+		ctx.JSON(http.StatusUnauthorized, errorResponse(err))
+		return
+	}
+
+	_, valid = server.validateAccount(ctx, req.ToAccountId, req.Currency)
+	if !valid {
 		return
 	}
 
@@ -47,22 +56,22 @@ func (server *Server) createTransfer(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, result)
 }
 
-func (server *Server) validateAccount(ctx *gin.Context, accountId int64, currency string) bool {
+func (server *Server) validateAccount(ctx *gin.Context, accountId int64, currency string) (db.Account, bool) {
 	account, err := server.store.GetAccount(ctx, accountId)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			ctx.JSON(http.StatusNotFound, errorResponse(err))
-			return false
+			return account, false
 		}
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
-		return false
+		return account, false
 	}
 
 	if account.Currency != currency {
 		err := fmt.Errorf("account [%d] currency mismatch: %s vs %s", accountId, account.Currency, currency)
 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
-		return false
+		return account, false
 	}
 
-	return true
+	return account, true
 }
