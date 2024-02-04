@@ -10,7 +10,7 @@ stop_containers:
 	fi
 
 create_container:
-	docker run --name ${DB_DOCKER_CONTAINER} -p ${DB_PORT}:5432 -e POSTGRES_USER=${DB_USER} -e POSTGRES_PASSWORD=${DB_PASSWORD} -d postgres:15-alpine
+	docker run --name ${DB_DOCKER_CONTAINER} --network bank-network -p ${DB_PORT}:5432 -e POSTGRES_USER=${DB_USER} -e POSTGRES_PASSWORD=${DB_PASSWORD} -d postgres:15-alpine
 
 create_db:
 	docker exec -it ${DB_DOCKER_CONTAINER} createdb --username=${DB_USER} --owner=${DB_USER} ${DB_NAME}
