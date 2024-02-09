@@ -6,6 +6,9 @@ name: Deploy to production
 on:
   push:
     branches: [ "main" ]
+  workflow_dispatch:
+    branches:
+      - main
 
 jobs:
 
