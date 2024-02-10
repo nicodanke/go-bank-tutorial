@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "BankTutorial API",
-    "version": "1.0",
+    "version": "1.1",
     "contact": {
       "name": "Nicolás Dankiewicz",
       "url": "https://github.com/nicodanke",
@@ -23,6 +23,8 @@
   "paths": {
     "/v1/createUser": {
       "post": {
+        "summary": "Create User",
+        "description": "Allow to create a new user",
         "operationId": "BankTutorial_CreateUser",
         "responses": {
           "200": {
@@ -55,6 +57,8 @@
     },
     "/v1/login": {
       "post": {
+        "summary": "Login User",
+        "description": "Login and get a token (PASETO) to make authenticated requests.",
         "operationId": "BankTutorial_Login",
         "responses": {
           "200": {
