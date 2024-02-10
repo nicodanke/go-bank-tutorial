@@ -30,6 +30,12 @@ migrate_down:
 migrate_down1:
 	migrate -path db/migrations -database ${DSN} -verbose down 1
 
+db_docs:
+	dbdocs build doc/db.dbml
+
+db_schema:
+	dbml2sql --postgres -o doc/schema.sql doc/db.dbml
+
 sqlc_generate:
 	sqlc generate
 
@@ -42,4 +48,4 @@ server:
 mock:
 	mockgen -package mockdb -destination db/mock/store.go github.com/nicodanke/bankTutorial/db/sqlc Store
 
-.PHONY: stop_containers create_container create_db start_container migrate_up migrate_up1 migrate_down migrate_down1 sqlc_generate test server mock
+.PHONY: stop_containers create_container create_db start_container migrate_up migrate_up1 migrate_down migrate_down1 sqlc_generate test server mock db_docs db_schema
