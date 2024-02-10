@@ -42,6 +42,7 @@ func (server *Server) setupRouter() {
 	// No Auth Required
 	router.POST("/users", server.createUser)
 	router.POST("/login", server.loginUser)
+	router.POST("/refreshToken", server.renewAccessToken)
 
 	// Auth Required
 	authRoutes.GET("/accounts", server.getAccounts)
