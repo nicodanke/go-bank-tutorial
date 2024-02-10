@@ -48,4 +48,13 @@ server:
 mock:
 	mockgen -package mockdb -destination db/mock/store.go github.com/nicodanke/bankTutorial/db/sqlc Store
 
-.PHONY: stop_containers create_container create_db start_container migrate_up migrate_up1 migrate_down migrate_down1 sqlc_generate test server mock db_docs db_schema
+proto:
+	rm -f pb/*.go
+	protoc --proto_path=proto --go_out=pb --go_opt=paths=source_relative \
+    --go-grpc_out=pb --go-grpc_opt=paths=source_relative \
+    proto/*.proto
+
+evans:
+	evans --host localhost --port 9090 -r repl
+
+.PHONY: stop_containers create_container create_db start_container migrate_up migrate_up1 migrate_down migrate_down1 sqlc_generate test server mock db_docs db_schema proto evans
