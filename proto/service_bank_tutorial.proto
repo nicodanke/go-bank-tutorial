@@ -12,7 +12,7 @@ option go_package = "github.com/nicodanke/bankTutorial/pb";
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     info: {
         title: "BankTutorial API";
-        version: "1.0";
+        version: "1.1";
         contact: {
             name: "Nicolás Dankiewicz";
             url: "https://github.com/nicodanke";
@@ -27,11 +27,19 @@ service BankTutorial {
             post: "/v1/login"
             body: "*"
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            description: "Login and get a token (PASETO) to make authenticated requests.";
+            summary: "Login User"
+        };    
     }
     rpc CreateUser (CreateUserRequest) returns (CreateUserResponse) {
         option (google.api.http) = {
             post: "/v1/createUser"
             body: "*"
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            description: "Allow to create a new user";
+            summary: "Create User"
+        };  
     }
 }
