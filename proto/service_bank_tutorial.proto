@@ -2,12 +2,23 @@ syntax = "proto3";
 
 package pb;
 
+import "google/api/annotations.proto";
 import "rpc_create_user.proto";
 import "rpc_login.proto";
 
 option go_package = "github.com/nicodanke/bankTutorial/pb";
 
 service BankTutorial {
-    rpc Login (LoginRequest) returns (LoginResponse) {}
-    rpc CreateUser (CreateUserRequest) returns (CreateUserResponse) {}
+    rpc Login (LoginRequest) returns (LoginResponse) {
+        option (google.api.http) = {
+            post: "/v1/login"
+            body: "*"
+        };
+    }
+    rpc CreateUser (CreateUserRequest) returns (CreateUserResponse) {
+        option (google.api.http) = {
+            post: "/v1/createUser"
+            body: "*"
+        };
+    }
 }
