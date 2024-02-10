@@ -9,6 +9,7 @@ require (
 	github.com/go-playground/validator/v10 v10.16.0
 	github.com/golang/mock v1.6.0
 	github.com/google/uuid v1.4.0
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.10.0
 	github.com/jackc/pgx v3.6.2+incompatible
 	github.com/jackc/pgx/v5 v5.5.1
 	github.com/o1egl/paseto v1.0.0
@@ -16,11 +17,13 @@ require (
 	github.com/stretchr/testify v1.8.4
 	github.com/techschool/simplebank v0.0.0-20231029084543-9544012aa580
 	golang.org/x/crypto v0.17.0
+	google.golang.org/genproto/googleapis/api v0.0.0-20231106174013-bbf56f31fb17
 	google.golang.org/grpc v1.59.0
 )
 
 require (
 	github.com/golang/protobuf v1.5.3 // indirect
+	google.golang.org/genproto v0.0.0-20231106174013-bbf56f31fb17 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20231120223509-83a465c0220f // indirect
 )
 
