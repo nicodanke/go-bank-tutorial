@@ -74,10 +74,13 @@ func runGRPCGatewayServer(config utils.Config, store db.Store) {
 	mux := http.NewServeMux()
 	mux.Handle("/", grpcMux)
 
+	fs := http.FileServer(http.Dir("./doc/swagger"))
+	mux.Handle("/swagger/", http.StripPrefix("/swagger/", fs))
+
 	listener, err := net.Listen("tcp", config.HTTPServerAddress)
 	if err != nil {
 		log.Fatal("Cannor create listener:", err)
-	} 
+	}
 
 	log.Printf("HTTP Gateway Server started at: %s", listener.Addr().String())
 	err = http.Serve(listener, mux)
