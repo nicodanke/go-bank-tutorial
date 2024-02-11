@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "BankTutorial API",
-    "version": "1.1",
+    "version": "1.2",
     "contact": {
       "name": "Nicolás Dankiewicz",
       "url": "https://github.com/nicodanke",
@@ -21,7 +21,41 @@
     "application/json"
   ],
   "paths": {
-    "/v1/createUser": {
+    "/v1/login": {
+      "post": {
+        "summary": "Login User",
+        "description": "Login and get a token (PASETO) to make authenticated requests.",
+        "operationId": "BankTutorial_Login",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbLoginResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbLoginRequest"
+            }
+          }
+        ],
+        "tags": [
+          "BankTutorial"
+        ]
+      }
+    },
+    "/v1/user": {
       "post": {
         "summary": "Create User",
         "description": "Allow to create a new user",
@@ -53,18 +87,16 @@
         "tags": [
           "BankTutorial"
         ]
-      }
-    },
-    "/v1/login": {
-      "post": {
-        "summary": "Login User",
-        "description": "Login and get a token (PASETO) to make authenticated requests.",
-        "operationId": "BankTutorial_Login",
+      },
+      "patch": {
+        "summary": "Update User",
+        "description": "Allow to partially update a user",
+        "operationId": "BankTutorial_UpdateUser",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbLoginResponse"
+              "$ref": "#/definitions/pbUpdateUserResponse"
             }
           },
           "default": {
@@ -80,7 +112,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/pbLoginRequest"
+              "$ref": "#/definitions/pbUpdateUserRequest"
             }
           }
         ],
@@ -149,6 +181,31 @@
         "refreshTokenExpiresAt": {
           "type": "string",
           "format": "date-time"
+        }
+      }
+    },
+    "pbUpdateUserRequest": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "fullName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "pbUpdateUserResponse": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/pbUser"
         }
       }
     },
